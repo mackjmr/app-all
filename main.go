@@ -32,7 +32,9 @@ func initLogger() {
 	if err != nil {
 		fmt.Printf("error opening file: %v", err)
 	}
-	log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.JSONFormatter{
+		TimestampFormat: "2006-01-02T15:04:05-0700",
+	})
 	log.SetOutput(f)
 	log.SetLevel(log.InfoLevel)
 }
@@ -112,7 +114,7 @@ func makeMetricSpanLog() {
 		"env":         "dev",
 		"version":     "0.1",
 		"source":      "app",
-		"dd.trace_id": span.SpanContext().TraceID().String(),
+		"trace_id": span.SpanContext().TraceID().String(),
 	}).Info("Did Work")
 	span.End()
 	counter.Add(context.Background(), 1)
